@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: flask-container
-        image: scribral/duo-deploy-flask:latest
+        image: scribral/duo-flask:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5500

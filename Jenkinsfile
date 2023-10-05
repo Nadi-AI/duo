@@ -1,59 +1,35 @@
 pipeline {
     agent any
     stages {
-        stage('Greet and niceties') {
+        stage('Greeting and niceties') {
             steps {
-                script {
-                    sh '''
-                    echo 'Good Morning Nadia'
-                    '''
-                }
+                sh '''
+                echo "Good Morning Nadia, let's get building!"
+                '''
             }
         }        
-        stage('Build') {
+        stage('Buildengg') {
             steps {
-                script {
-                    if (env.GIT_BRANCH == 'development') {
-                    sh 'docker build -t scribral/duo-backend:latest -t scribral/duo-backend:$BUILD_NUMBER .'
-                    } else {
-                        sh "echo 'Build not required!'"
-                    }
-                }
+                sh '''
+                docker build -t scribral/duo-flask:latest .
+                docker build -t scribral/duo-nginx:latest ./nginx
+               
+                '''
             }
         }
         stage('Push') {
             steps {
-                script {
-                    if (env.GIT_BRANCH == 'development') {
-                        sh '''
-                        docker push scribral/duo-backend:latest
-                        docker push scribral/duo-backend:$BUILD_NUMBER
-                        '''
-                    } else {
-                        sh "echo 'Push not required!'"
-                    }
-                }
+                sh '''
+                docker push scribral/duo-flask:latest
+                docker push scribral/duo-nginx:latest
+                '''
             }
         }
         stage('Deploy') {
             steps {
-                script {
-                    if (env.GIT_BRANCH == 'development') {
-                        sh'''
-                        kubectl apply -f . --namespace=development
-                        kubectl rollout restart deployment backend --namespace=development
-                        '''
-                    } else if (env.GIT_BRANCH == 'main') {
-                        sh'''
-                        kubectl apply -f . --namespace=production
-                        kubectl rollout restart deployment backend --namespace=production
-                        '''
-                    } else {
-                        sh'''
-                        echo "unrecognised branch"
-                        '''
-                    }
-                }
+                sh '''
+                kubectl apply -f . -n development
+                '''
             }
         }
         stage('Clean Up') { 
