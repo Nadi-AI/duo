@@ -33,10 +33,10 @@ spec:
     spec:
       containers:
       - name: flask-container
-        image: stratcastor/duo-deploy-flask:latest
+        image: scribral/duo-deploy-flask:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5500
         env:
         - name: YOUR_NAME
-          value: Piers
+          value: NADIA
