@@ -11,7 +11,7 @@ pipeline {
         stage('Buildengg') {
             steps {
                 script {
-                    if (env.GIT_BRANCH == 'develop') {
+                    if (env.GIT_BRANCH == 'origin/dev') {
                 sh '''
                 docker build -t scribral/duo-flask:latest .
                 docker build -t scribral/duo-flask:v$BUILD_NUMBER .
@@ -34,7 +34,7 @@ pipeline {
         stage('Push') {
             steps {
                 script {
-                    if (env.GIT_BRANCH == 'develop') {
+                    if (env.GIT_BRANCH == 'origin/dev') {
             
                 sh '''
                 docker push scribral/duo-flask:latest
@@ -54,16 +54,16 @@ pipeline {
         stage('Deploy and rollout restart') {
             steps {
                 script {
-                    if (env.GIT_BRANCH == 'develop') {
+                    if (env.GIT_BRANCH == 'origin/dev') {
                             
                 sh '''
-                kubectl apply -f ./k8s-deployments --namespace=development
-                kubectl rollout restart deployment --namespace=development flask-deployment
+                kubectl apply -f ./k8s-deployments --namespace=origin/devment
+                kubectl rollout restart deployment --namespace=origin/devment flask-deployment
                 '''
-                    } else if (env.GIT_BRANCH == 'main') {
+                    } else if (env.GIT_BRANCH == 'origin/main') {
                         sh '''
-                        kubectl apply -f ./k8s-deployments --namespace=development
-                        kubectl rollout restart deployment --namespace=development flask-deployment
+                        kubectl apply -f ./k8s-deployments --namespace=origin/devment
+                        kubectl rollout restart deployment --namespace=origin/devment flask-deployment
                         '''
 
                     }  else {
