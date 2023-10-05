@@ -1,6 +1,15 @@
 pipeline {
     agent any
     stages {
+        stage('Greet and niceties') {
+            steps {
+                script {
+                    sh '''
+                    echo 'Good Morning Nadia'
+                    '''
+                }
+            }
+        }        
         stage('Build') {
             steps {
                 script {
