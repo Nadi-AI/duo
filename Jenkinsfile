@@ -28,7 +28,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                kubectl apply -f ./k8s-deployments --namespace=development
+                kubectl apply -f ./k8s-deployments --namespace=development nadia-cluster
                 '''
             }
         }
