@@ -32,6 +32,13 @@ pipeline {
                 '''
             }
         }
+        stage('Rollout restart') {
+            steps {
+                sh '''
+                kubectl rollout restart deployment --namespace=development flask-deployment
+                '''
+            }
+        }        
         stage('Clean Up') { 
             steps {
                 sh '''
